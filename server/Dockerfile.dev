@@ -1,0 +1,8 @@
+FROM node:14.14.0-alpine
+WORKDIR '/app'
+COPY ./package.json ./
+RUN npm install
+COPY . . 
+# The first . indicates the current directory of the host machine, 
+# and the second . indicates the current directory inside the Docker 
+CMD ["npm", "run","dev"]

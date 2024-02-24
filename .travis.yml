@@ -1,0 +1,23 @@
+language: generic 
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t charuka/react-test -f ./client/Dockerfile.dev ./client
+
+scripts :
+  - docker run -e CI=true charuka/react-test npm run test
+
+after_success :
+  - docker build -t charuka/multi-client ./client
+  - docker build -t charuka/multi-nginx ./nginx
+  - docker build -t charuka/multi-server ./server
+  - docker build -t charuka/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo  "$DOCKER_PASSWORD"  | dockerlogin -u  "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub  
+  - docker push charuka/multi-client
+  - docker push charuka/multi-nginx
+  - docker push charuka/multi-server
+  - docker push charuka/multi-worker
