@@ -21,3 +21,5 @@ after_success :
   - docker push charuka/multi-nginx
   - docker push charuka/multi-server
   - docker push charuka/multi-worker
+
+  
